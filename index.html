@@ -416,7 +416,7 @@ function showResult(nome, p, code){
   const validade = dataBR(FIM_CAMPANHA);
   $('resVal').textContent = validade;
   if(WHATSAPP_LOJA){
-    const texto = `Olá! Ganhei na roleta da Janaina Vieira e quero usar meu cupom.\n\nCupom: ${code}\nPrêmio: ${p.full}\nVálido até: ${validade}\nNome: ${nome}`;
+    const texto = `Olá, quero utilizar meu cupom de desconto da roleta!\n\nCupom: ${code}\nPrêmio: ${p.full}\nNome: ${nome}`;
     $('resgatarBtn').href = `https://wa.me/${WHATSAPP_LOJA}?text=${encodeURIComponent(texto)}`;
   }
   $('overlay').hidden = false;
