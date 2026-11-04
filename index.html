@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F1EAE0">
-<meta name="description" content="Gire a roleta da Janaina Vieira Store e ganhe um benefício na sua próxima compra.">
-<meta property="og:title" content="Roleta Premiada · Janaina Vieira Store">
-<meta property="og:description" content="Todo giro ganha. Até R$100 OFF, Chinelo Colcci e um calçado escondido na roleta.">
-<title>Roleta Premiada · Janaina Vieira Store</title>
+<meta name="description" content="Gire a roleta da Janaina Vieira e ganhe um benefício na sua próxima compra.">
+<meta property="og:title" content="Roleta Premiada · Janaina Vieira">
+<meta property="og:description" content="Todo giro ganha. Até R$100 OFF, Chinelo Colcci e um Calçado Janaina Vieira escondido na roleta.">
+<title>Roleta Premiada · Janaina Vieira</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -136,13 +136,13 @@ footer strong{color:var(--texto);font-weight:500}
 <main class="page">
   <header>
     <img class="logo-img" src="logo.png" alt="Janaina Vieira" width="76" height="76">
-    <div class="marca">Janaina Vieira<small>STORE · BETIM</small></div>
+    <div class="marca">Janaina Vieira<small>BETIM · MG</small></div>
     <div class="eyebrow">Roleta premiada</div>
   </header>
 
   <section class="hero">
     <h1>Gire e ganhe na <em>sua próxima compra</em></h1>
-    <p>Todo giro ganha. Tem até <strong>R$100 OFF</strong>, <strong>Chinelo Colcci</strong> e <strong>um calçado</strong> escondido na roleta.</p>
+    <p>Todo giro ganha. Tem até <strong>R$100 OFF</strong>, <strong>Chinelo Colcci</strong> e <strong>um Calçado Janaina Vieira</strong> escondido na roleta.</p>
     <div class="timer" id="timer" role="timer"><span class="dot" aria-hidden="true"></span><span id="timerTxt">Giros liberados até 30/11</span></div>
   </section>
 
@@ -165,14 +165,14 @@ footer strong{color:var(--texto);font-weight:500}
       <input type="tel" id="whats" inputmode="numeric" autocomplete="tel" placeholder="(31) 9 0000-0000" aria-describedby="whatsHint">
       <p class="hint" id="whatsHint"><span>Use seu WhatsApp verdadeiro: <strong>o cupom fica vinculado a este número</strong> e só vale para ele na hora da compra.</span></p>
     </div>
-    <label class="check" for="aceite"><input type="checkbox" id="aceite"> <span>Aceito o regulamento e a política de privacidade e quero receber novidades da Janaina Vieira Store pelo WhatsApp.</span></label>
+    <label class="check" for="aceite"><input type="checkbox" id="aceite"> <span>Aceito o regulamento e a política de privacidade e quero receber novidades da Janaina Vieira pelo WhatsApp.</span></label>
     <p class="err" id="err" role="alert"></p>
     <button class="btn" type="submit" id="spinBtn">Girar a roleta</button>
   </form>
 
 
   <footer>
-    <span><strong>Janaina Vieira Store</strong> · Betim, MG</span>
+    <span><strong>Janaina Vieira</strong> · Betim, MG</span>
     <span>Seg a Sex 9h às 19h · Sáb 9h às 13h</span>
     <span>Giros e cupons válidos até 30/11/2026. Benefício pessoal e intransferível, 1 por cliente, não cumulativo com outras promoções. Válido apresentando o código e o WhatsApp cadastrado.</span>
   </footer>
@@ -206,7 +206,7 @@ const PRIZES = [
   {id:'chinelo', label:'Chinelo',      sub:'COLCCI · +R$499', full:'Chinelo Colcci de presente',                 cond:'Brinde nas compras a partir de R$499.',                  w:12},
   {id:'r50',     label:'R$50 OFF',     sub:'COMPRAS +R$599',  full:'R$50 OFF na sua compra',                     cond:'Desconto nas compras a partir de R$599.',                w:14},
   {id:'r100',    label:'R$100 OFF',    sub:'COMPRAS +R$899',  full:'R$100 OFF na sua compra',                    cond:'Desconto nas compras a partir de R$899.',                w:8},
-  {id:'calcado', label:'Calçado',      sub:'PRÊMIO RARO',     full:'Um calçado de presente',                     cond:'A loja entra em contato pelo WhatsApp para você escolher o modelo e combinar a retirada.', w:0, rare:true}
+  {id:'calcado', label:'Calçado',      sub:'JANAINA VIEIRA',  full:'Um Calçado Janaina Vieira de presente',                     cond:'A loja entra em contato pelo WhatsApp para você escolher o modelo e combinar a retirada.', w:0, rare:true}
 ];
 
 // Planilha (Google Apps Script). Cole aqui a URL /exec do App da Web.
@@ -411,7 +411,7 @@ function showResult(nome, p, code){
   const validade = dataBR(FIM_CAMPANHA);
   $('resVal').textContent = validade;
   if(WHATSAPP_LOJA){
-    const texto = `Olá! Ganhei na roleta da Janaina Vieira Store e quero usar meu cupom.\n\nCupom: ${code}\nPrêmio: ${p.full}\nVálido até: ${validade}\nNome: ${nome}`;
+    const texto = `Olá! Ganhei na roleta da Janaina Vieira e quero usar meu cupom.\n\nCupom: ${code}\nPrêmio: ${p.full}\nVálido até: ${validade}\nNome: ${nome}`;
     $('resgatarBtn').href = `https://wa.me/${WHATSAPP_LOJA}?text=${encodeURIComponent(texto)}`;
   }
   $('overlay').hidden = false;

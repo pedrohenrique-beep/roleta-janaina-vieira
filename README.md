@@ -1,6 +1,6 @@
-# Roleta Janaina Vieira Store
+# Roleta Janaina Vieira
 
-Roleta premiada da Janaina Vieira Store (Betim, MG) para captação de leads via tráfego pago, stories e base de clientes.
+Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráfego pago, stories e base de clientes.
 
 ## Onde alterar
 
@@ -20,7 +20,7 @@ Roleta premiada da Janaina Vieira Store (Betim, MG) para captação de leads via
 | R$50 OFF (a partir de R$599) | 14% |
 | Chinelo Colcci (a partir de R$499) | 12% |
 | R$100 OFF (a partir de R$899) | 8% |
-| Calçado | 1 unidade, num giro entre o 150º e o 170º |
+| Calçado Janaina Vieira | 1 unidade, num giro entre o 150º e o 170º |
 
 ## Pendente
 

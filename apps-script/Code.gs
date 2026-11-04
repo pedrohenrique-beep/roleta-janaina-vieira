@@ -1,5 +1,5 @@
 /**
- * Roleta Janaina Vieira Store: sorteia o prêmio, grava o giro na planilha e libera o calçado.
+ * Roleta Janaina Vieira: sorteia o prêmio, grava o giro na planilha e libera o calçado.
  * Cole este código em Extensões → Apps Script da planilha de leads
  * e implante como App da Web (Executar como: Eu · Acesso: Qualquer pessoa).
  *
@@ -30,7 +30,7 @@ const PREMIOS = [
   { id: 'chinelo', nome: 'Chinelo Colcci (compras a partir de R$499)',    peso: 12 },
   { id: 'r100',    nome: 'R$100 OFF (compras a partir de R$899)',         peso: 8 }
 ];
-const CALCADO = { id: 'calcado', nome: 'CALÇADO DE PRESENTE (prêmio raro)' };
+const CALCADO = { id: 'calcado', nome: 'CALÇADO JANAINA VIEIRA (prêmio raro)' };
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
