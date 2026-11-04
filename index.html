@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F1EAE0">
+<meta name="description" content="Gire a roleta da Janaina Vieira Store e ganhe um benefício na sua próxima compra.">
+<meta property="og:title" content="Roleta Premiada · Janaina Vieira Store">
+<meta property="og:description" content="Todo giro ganha. Até R$100 OFF, Chinelo Colcci e um calçado escondido na roleta.">
+<title>Roleta Premiada · Janaina Vieira Store</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout: coluna única centrada (tráfego mobile), roleta como peça central. Paleta da loja: creme do logo, caramelo das fotos, dourado do monograma. */
+:root{
+  --creme:#F1EAE0;
+  --creme-claro:#F8F4EE;
+  --areia:#E3D6C5;
+  --caramelo:#A65A2E;
+  --caramelo-esc:#7C401F;
+  --espresso:#2A1E17;
+  --ouro:#B8954E;
+  --ouro-claro:#DCC38C;
+  --texto:#2A1E17;
+  --muted:#6E5E52;
+  --display:"Cormorant Garamond", "Didot", Georgia, serif;
+  --body:"Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+html{overflow-x:hidden}
+body{
+  margin:0;
+  background:radial-gradient(80% 40% at 50% 48%, rgba(184,149,78,.18), transparent 70%), linear-gradient(180deg,var(--creme-claro),var(--creme) 50%,#EADFD1);
+  color:var(--texto);font-family:var(--body);font-weight:400;font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));
+  padding-right:max(16px, env(safe-area-inset-right,0px));
+  overflow-x:hidden;
+}
+.page{max-width:460px;margin:0 auto;padding-block:28px 40px;display:flex;flex-direction:column;gap:26px}
+
+header{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.logo-img{width:76px;height:76px;border-radius:50%;box-shadow:0 0 0 1px rgba(184,149,78,.5),0 8px 20px rgba(42,30,23,.12)}
+.marca{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:.14em;line-height:1;text-transform:uppercase}
+.marca small{display:block;font-family:var(--body);font-weight:400;font-size:10px;letter-spacing:.5em;padding-left:.5em;margin-top:6px;color:var(--muted)}
+.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--caramelo);font-weight:500}
+
+.hero{text-align:center;display:flex;flex-direction:column;gap:12px}
+.hero h1{font-family:var(--display);font-weight:500;font-size:clamp(34px,9.5vw,46px);line-height:1.05;margin:0;text-wrap:balance}
+.hero h1 em{font-style:italic;color:var(--caramelo)}
+.hero p{margin:0 auto;max-width:33ch;font-size:16px;color:var(--muted);text-wrap:balance}
+.hero p strong{color:var(--texto);font-weight:500}
+.timer{align-self:center;display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border:1px solid rgba(166,90,46,.4);border-radius:999px;font-size:13px;letter-spacing:.04em;color:var(--caramelo-esc);font-variant-numeric:tabular-nums;background:rgba(255,255,255,.55)}
+.timer .dot{width:7px;height:7px;border-radius:50%;background:var(--caramelo);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+.encerrada .wheel-wrap,.encerrada #form{opacity:.45;pointer-events:none}
+
+/* Roleta */
+.wheel-wrap{position:relative;width:min(100%,360px);aspect-ratio:1;margin:0 auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wheel-ring{position:absolute;inset:0;border-radius:50%;padding:10px;overflow:hidden;background:conic-gradient(from 0deg,#9C7A3C,var(--ouro-claro),#A8874A,#E8D3A2,#93712F,var(--ouro-claro),#9C7A3C);box-shadow:0 22px 46px rgba(42,30,23,.28)}
+canvas#wheel{width:100%;height:100%;border-radius:50%;display:block;transition:transform 6.2s cubic-bezier(.12,.72,.08,1)}
+.pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:30px;height:42px;z-index:3;filter:drop-shadow(0 4px 6px rgba(42,30,23,.35))}
+.hub{position:absolute;left:50%;top:50%;width:98px;height:98px;margin:-49px 0 0 -49px;border-radius:50%;z-index:5;border:3px solid var(--creme-claro);background:radial-gradient(circle at 35% 28%,#C47446,var(--caramelo) 55%,var(--caramelo-esc));color:var(--creme-claro);font:500 14px/1 var(--body);letter-spacing:.2em;padding-left:.2em;cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 18px rgba(42,30,23,.35);animation:pulso 1.8s ease-out infinite;transition:transform .15s}
+.hub:active{transform:scale(.96)}
+.hub:focus-visible{outline:2px solid var(--espresso);outline-offset:4px}
+.hub span{display:flex;flex-direction:column;align-items:center;gap:5px}
+.hub small{font-size:8px;letter-spacing:.18em;opacity:.85}
+.wheel-wrap.spinning .hub{animation:none;cursor:default}
+@keyframes pulso{0%{box-shadow:0 6px 18px rgba(42,30,23,.35),0 0 0 0 rgba(166,90,46,.55)}70%{box-shadow:0 6px 18px rgba(42,30,23,.35),0 0 0 22px rgba(166,90,46,0)}100%{box-shadow:0 6px 18px rgba(42,30,23,.35),0 0 0 0 rgba(166,90,46,0)}}
+.wheel-wrap.locked canvas{filter:saturate(.75)}
+.wheel-msg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.96);width:min(84%,280px);z-index:6;background:var(--espresso);color:var(--creme);border:1px solid var(--ouro);border-radius:4px;padding:16px 18px;text-align:center;font-size:15px;line-height:1.45;box-shadow:0 14px 34px rgba(42,30,23,.4);opacity:0;pointer-events:none;transition:opacity .25s, transform .25s}
+.wheel-msg strong{display:block;font-family:var(--display);font-weight:500;font-size:22px;color:var(--ouro-claro);margin-bottom:4px}
+.wheel-msg.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+@keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.card.nudge{animation:nudge .35s ease 2}
+
+/* Formulário */
+.card{background:#fff;border:1px solid rgba(184,149,78,.45);box-shadow:0 16px 36px rgba(42,30,23,.10);border-radius:4px;padding:24px 20px;display:flex;flex-direction:column;gap:16px}
+.card h2{font-family:var(--display);font-weight:500;font-size:28px;margin:0;line-height:1.1}
+.card .sub{margin:-8px 0 0;color:var(--muted);font-size:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+input[type=text],input[type=tel]{font:inherit;color:var(--texto);background:transparent;border:0;border-bottom:1px solid #BFB0A1;padding:8px 0;font-size:17px;border-radius:0;outline:none}
+input[type=text]:focus,input[type=tel]:focus,.field.attention input{border-bottom-color:var(--caramelo)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.45}
+.check input{accent-color:var(--caramelo);margin-top:3px;width:16px;height:16px;flex:none}
+.err{color:#B3261E;font-size:13px;min-height:1em;margin:0}
+.hint{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.4;color:var(--muted);margin:2px 0 0}
+.hint::before{content:"";flex:none;width:6px;height:6px;margin-top:6px;transform:rotate(45deg);background:var(--ouro)}
+.hint strong{color:var(--caramelo-esc);font-weight:500}
+.field.invalid input{border-bottom-color:#B3261E}
+.field.invalid .hint{color:#B3261E}
+.btn{font:inherit;font-weight:500;font-size:13px;letter-spacing:.22em;text-transform:uppercase;border:0;border-radius:2px;padding:17px 18px;cursor:pointer;background:var(--espresso);color:var(--creme-claro);transition:transform .15s, background .15s}
+.btn:hover{background:#3B2B21}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible,input:focus-visible{outline:2px solid var(--caramelo);outline-offset:3px}
+.btn.ghost,.btn.ghost:hover{background:transparent;color:var(--espresso);border:1px solid var(--espresso)}
+a.btn{text-decoration:none;display:block;text-align:center}
+
+footer{text-align:center;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+footer strong{color:var(--texto);font-weight:500}
+
+/* Modal de resultado */
+.overlay{position:fixed;inset:0;background:rgba(42,30,23,.6);z-index:20;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));backdrop-filter:blur(4px)}
+.result{width:100%;max-width:400px;background:var(--creme-claro);border:1px solid var(--ouro);border-radius:4px;padding:30px 22px;text-align:center;display:flex;flex-direction:column;gap:14px;animation:rise .5s ease}
+.result .tag{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--caramelo)}
+.result h3{font-family:var(--display);font-weight:500;font-size:32px;margin:0;line-height:1.1}
+.result .prize{font-family:var(--display);font-style:italic;font-size:27px;color:var(--caramelo-esc);line-height:1.2;text-wrap:balance}
+.result .cond{font-size:13px;color:var(--muted);margin:0}
+.result .validade{margin:0;font-size:14px}
+.result .validade strong{color:var(--caramelo-esc);font-weight:500}
+.result.raro{background:var(--espresso);color:var(--creme)}
+.result.raro .prize,.result.raro .tag{color:var(--ouro-claro)}
+.result.raro .cond{color:#CDBFB2}
+.result.raro .code code{color:var(--creme);border-color:var(--ouro-claro)}
+.result.raro .btn,.result.raro .btn:hover{background:var(--ouro-claro);color:var(--espresso)}
+.result.raro .validade strong{color:var(--ouro-claro)}
+.result.raro .btn.ghost,.result.raro .btn.ghost:hover{background:transparent;color:var(--creme);border-color:var(--creme)}
+.code{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.code code{font-family:var(--body);font-weight:500;font-size:20px;letter-spacing:.18em;border:1px dashed var(--caramelo);padding:10px 16px;user-select:all}
+.copy{font:inherit;font-size:12px;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--caramelo);border:0;cursor:pointer;padding:8px}
+.result .actions{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){canvas#wheel{transition-duration:.01s}.result,.hub,.timer .dot{animation:none}}
+</style>
+</head>
+<body>
+
+<main class="page">
+  <header>
+    <img class="logo-img" src="logo.png" alt="Janaina Vieira" width="76" height="76">
+    <div class="marca">Janaina Vieira<small>STORE · BETIM</small></div>
+    <div class="eyebrow">Roleta premiada</div>
+  </header>
+
+  <section class="hero">
+    <h1>Gire e ganhe na <em>sua próxima compra</em></h1>
+    <p>Todo giro ganha. Tem até <strong>R$100 OFF</strong>, <strong>Chinelo Colcci</strong> e <strong>um calçado</strong> escondido na roleta.</p>
+    <div class="timer" id="timer" role="timer"><span class="dot" aria-hidden="true"></span><span id="timerTxt">Giros liberados até 30/11</span></div>
+  </section>
+
+  <div class="wheel-wrap locked" id="wheelWrap" tabindex="0" aria-label="Girar a roleta">
+    <svg class="pointer" viewBox="0 0 30 42" aria-hidden="true"><path d="M15 42 L2 10 A13 13 0 1 1 28 10 Z" fill="#2A1E17"/><circle cx="15" cy="12" r="5" fill="#DCC38C"/></svg>
+    <div class="wheel-ring"><canvas id="wheel" width="680" height="680" role="img" aria-label="Roleta com sete prêmios"></canvas></div>
+    <button class="hub" type="button" id="hubBtn" aria-label="Girar a roleta"><span>GIRAR<small>TOQUE AQUI</small></span></button>
+    <div class="wheel-msg" id="wheelMsg" role="status" aria-live="polite"><strong>Quase lá</strong>Preencha seu nome e WhatsApp abaixo para liberar o seu giro.</div>
+  </div>
+
+  <form class="card" id="form" novalidate>
+    <h2>Libere seu giro</h2>
+    <p class="sub">Leva 10 segundos. Um giro por WhatsApp.</p>
+    <div class="field">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" autocomplete="given-name" placeholder="Qual seu nome?">
+    </div>
+    <div class="field">
+      <label for="whats">WhatsApp</label>
+      <input type="tel" id="whats" inputmode="numeric" autocomplete="tel" placeholder="(31) 9 0000-0000" aria-describedby="whatsHint">
+      <p class="hint" id="whatsHint"><span>Use seu WhatsApp verdadeiro: <strong>o cupom fica vinculado a este número</strong> e só vale para ele na hora da compra.</span></p>
+    </div>
+    <label class="check" for="aceite"><input type="checkbox" id="aceite"> <span>Aceito o regulamento e a política de privacidade e quero receber novidades da Janaina Vieira Store pelo WhatsApp.</span></label>
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn" type="submit" id="spinBtn">Girar a roleta</button>
+  </form>
+
+
+  <footer>
+    <span><strong>Janaina Vieira Store</strong> · Betim, MG</span>
+    <span>Seg a Sex 9h às 19h · Sáb 9h às 13h</span>
+    <span>Giros e cupons válidos até 30/11/2026. Benefício pessoal e intransferível, 1 por cliente, não cumulativo com outras promoções. Válido apresentando o código e o WhatsApp cadastrado.</span>
+  </footer>
+</main>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="result" id="resBox" role="dialog" aria-modal="true" aria-labelledby="resTitle">
+    <span class="tag" id="resTag">Seu benefício</span>
+    <h3 id="resTitle">Parabéns, <span id="resNome"></span>!</h3>
+    <div class="prize" id="resPrize"></div>
+    <p class="cond" id="resCond"></p>
+    <div class="code"><code id="resCode">JV-0000</code><button class="copy" type="button" id="copyBtn">Copiar</button></div>
+    <p class="validade">Válido até <strong id="resVal">30/11</strong></p>
+    <p class="cond">Apresente o código na loja ou pelo WhatsApp, usando o mesmo número cadastrado. 1 benefício por cliente.</p>
+    <div class="actions">
+      <a class="btn" id="resgatarBtn" href="https://linktr.ee/janaina.vieira.store" target="_blank" rel="noopener">Resgatar pelo WhatsApp</a>
+      <button class="btn ghost" type="button" id="resetBtn">Novo participante</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== CONFIGURAÇÃO =====
+// Prêmios na ordem da roleta. O "id" precisa ser igual ao do Apps Script.
+// As chances ficam no Apps Script (servidor), não aqui: assim ninguém manipula o sorteio pelo navegador.
+// "w" abaixo só é usado no modo sem planilha (teste/queda de rede) e o calçado nunca sai nesse modo.
+const PRIZES = [
+  {id:'off5',    label:'5% OFF',       sub:'NA SUA COMPRA',   full:'5% OFF na sua compra',                       cond:'Desconto válido em toda a loja.',                        w:30},
+  {id:'copo',    label:'Copo Térmico', sub:'COMPRAS +R$200',  full:'Copo térmico personalizado',                 cond:'Brinde nas compras acima de R$200.',                     w:22},
+  {id:'off10',   label:'10% OFF',      sub:'NA SUA COMPRA',   full:'10% OFF na sua compra',                      cond:'Desconto válido em toda a loja.',                        w:14},
+  {id:'chinelo', label:'Chinelo',      sub:'COLCCI · +R$499', full:'Chinelo Colcci de presente',                 cond:'Brinde nas compras a partir de R$499.',                  w:12},
+  {id:'r50',     label:'R$50 OFF',     sub:'COMPRAS +R$599',  full:'R$50 OFF na sua compra',                     cond:'Desconto nas compras a partir de R$599.',                w:14},
+  {id:'r100',    label:'R$100 OFF',    sub:'COMPRAS +R$899',  full:'R$100 OFF na sua compra',                    cond:'Desconto nas compras a partir de R$899.',                w:8},
+  {id:'calcado', label:'Calçado',      sub:'PRÊMIO RARO',     full:'Um calçado de presente',                     cond:'A loja entra em contato pelo WhatsApp para você escolher o modelo e combinar a retirada.', w:0, rare:true}
+];
+
+// Planilha (Google Apps Script). Cole aqui a URL /exec do App da Web.
+const SHEETS_URL = '';
+// WhatsApp da loja (só números, com 55 + DDD). Vazio = botão abre o linktree.
+const WHATSAPP_LOJA = '';
+// Pixel da Meta. Vazio = pixel desligado.
+const PIXEL_ID = '';
+// Campanha: giros e cupons até esta data (horário de Brasília).
+const FIM_CAMPANHA = new Date('2026-11-30T23:59:59-03:00');
+// ========================
+
+const $ = id => document.getElementById(id);
+const N = PRIZES.length, SEG = 2*Math.PI/N, SEG_DEG = 360/N;
+
+// Pixel (só carrega se houver ID)
+if(PIXEL_ID){
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', PIXEL_ID); fbq('track', 'PageView');
+}
+
+// Desenho da roleta
+const cv = $('wheel'), ctx = cv.getContext('2d'), C = cv.width/2, R = C;
+function drawWheel(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  for(let i=0;i<N;i++){
+    const p = PRIZES[i], a0 = -Math.PI/2 + i*SEG, a1 = a0 + SEG;
+    const g = ctx.createRadialGradient(C,C,40,C,C,R);
+    let corTexto, corSub;
+    if(p.rare){ g.addColorStop(0,'#3A2A20'); g.addColorStop(1,'#1E1510'); corTexto='#E8D3A2'; corSub='#C9A85E'; }
+    else if(i%2===0){ g.addColorStop(0,'#B86A3B'); g.addColorStop(1,'#8E4A24'); corTexto='#FBF6EF'; corSub='rgba(251,246,239,.85)'; }
+    else { g.addColorStop(0,'#FBF7F1'); g.addColorStop(1,'#EADFD0'); corTexto='#2A1E17'; corSub='#7C401F'; }
+    ctx.beginPath(); ctx.moveTo(C,C); ctx.arc(C,C,R,a0,a1); ctx.closePath();
+    ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = '#C9A85E'; ctx.lineWidth = 3; ctx.stroke();
+
+    ctx.save(); ctx.translate(C,C); ctx.rotate(a0 + SEG/2);
+    ctx.textAlign='right'; ctx.textBaseline='middle';
+    ctx.fillStyle = corTexto;
+    const tam = p.label.length > 9 ? 34 : 42;
+    ctx.font = (p.rare ? 'italic 600 ' : '600 ') + tam + 'px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText(p.label, R-30, -13);
+    ctx.fillStyle = corSub;
+    ctx.font = '500 16px "Jost", system-ui, sans-serif';
+    ctx.fillText(p.sub, R-30, 21);
+    ctx.restore();
+  }
+  ctx.beginPath(); ctx.arc(C,C,R-2,0,2*Math.PI); ctx.strokeStyle='#DCC38C'; ctx.lineWidth=4; ctx.stroke();
+}
+document.fonts ? document.fonts.ready.then(drawWheel) : 0;
+drawWheel();
+
+// WhatsApp: máscara e validação (DDD válido + 9 dígitos começando com 9)
+const whats = $('whats');
+const DDDS = [11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99];
+function whatsValido(d){
+  if(d.length !== 11 || !DDDS.includes(+d.slice(0,2)) || d[2] !== '9') return false;
+  const n = d.slice(3);
+  if(/^(\d)\1{7}$/.test(n)) return false;
+  if('0123456789012345'.includes(n) || '9876543210987654'.includes(n)) return false;
+  return true;
+}
+whats.addEventListener('input', ()=>{
+  const d = whats.value.replace(/\D/g,'').slice(0,11);
+  let out = d;
+  if(d.length>2) out = `(${d.slice(0,2)}) ${d.slice(2)}`;
+  if(d.length>7) out = `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+  whats.value = out;
+  whats.closest('.field').classList.remove('invalid','attention');
+});
+whats.addEventListener('blur', ()=>{ const d = whats.value.replace(/\D/g,''); if(d.length && !whatsValido(d)) whats.closest('.field').classList.add('invalid'); });
+$('nome').addEventListener('input', ()=>$('nome').closest('.field').classList.remove('attention'));
+
+// Campanha
+function dataBR(d){ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'America/Sao_Paulo'}); }
+function campanhaAtiva(){ return Date.now() <= FIM_CAMPANHA.getTime(); }
+function atualizarTimer(){
+  const ms = FIM_CAMPANHA - Date.now();
+  if(ms <= 0){
+    $('timerTxt').textContent = 'A roleta foi encerrada. Obrigada por participar!';
+    document.body.classList.add('encerrada'); $('spinBtn').disabled = true; $('hubBtn').disabled = true;
+    return false;
+  }
+  const d = Math.floor(ms/864e5), h = Math.floor(ms%864e5/36e5), m = Math.floor(ms%36e5/6e4), pad = n => String(n).padStart(2,'0');
+  $('timerTxt').textContent = d >= 1 ? `Giros até ${dataBR(FIM_CAMPANHA).slice(0,5)} · faltam ${d}d ${pad(h)}h ${pad(m)}min` : `Últimas horas · faltam ${pad(h)}h ${pad(m)}min`;
+  return true;
+}
+if(atualizarTimer()) setInterval(atualizarTimer, 30000);
+
+// Controle local (o bloqueio real é na planilha)
+function used(phone){ try{ return JSON.parse(localStorage.getItem('jv_giros')||'[]').includes(phone); }catch(e){ return false; } }
+function markUsed(phone){ try{ const a = JSON.parse(localStorage.getItem('jv_giros')||'[]'); a.push(phone); localStorage.setItem('jv_giros', JSON.stringify(a)); }catch(e){} }
+
+// Sorteio local: só no modo sem planilha. Nunca entrega o calçado.
+function pickLocal(){
+  const total = PRIZES.reduce((s,p)=>s+p.w,0);
+  let r = Math.random()*total;
+  for(let i=0;i<N;i++){ r -= PRIZES[i].w; if(r<0) return i; }
+  return 0;
+}
+function codigoLocal(){ return 'JV-' + Math.random().toString(36).slice(2,6).toUpperCase(); }
+
+// Origem do lead: ?origem=trafego / stories / bio / clientes / loja
+const qs = new URLSearchParams(location.search);
+const ORIGEM = (qs.get('origem') || qs.get('utm_source') || 'direto').toLowerCase().slice(0,40);
+
+function cookie(n){ const m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : ''; }
+function dadosMeta(){
+  let fbc = cookie('_fbc'); const fbclid = qs.get('fbclid');
+  if(!fbc && fbclid) fbc = `fb.1.${Date.now()}.${fbclid}`;
+  return { fbp: cookie('_fbp'), fbc, url: location.href, ua: navigator.userAgent };
+}
+
+// O servidor sorteia o prêmio, gera o código e conta os giros (é ele que libera o calçado).
+async function registrarGiro(lead){
+  if(!SHEETS_URL) return {ok:true, offline:true};
+  try{
+    const r = await fetch(SHEETS_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(lead)});
+    return await r.json();
+  }catch(e){ return {ok:true, offline:true}; }
+}
+
+let rotation = 0, spinning = false;
+$('form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(spinning) return;
+  if(!campanhaAtiva()){ atualizarTimer(); return; }
+  const nome = $('nome').value.trim(), phone = whats.value.replace(/\D/g,'');
+  const err = $('err'), btn = $('spinBtn');
+  if(nome.length < 2){ err.textContent = 'Digite seu nome para liberar o giro.'; $('nome').focus(); return; }
+  if(!whatsValido(phone)){ err.textContent = 'Confira seu WhatsApp: DDD + 9 dígitos, começando com 9.'; whats.closest('.field').classList.add('invalid'); whats.focus(); return; }
+  if(!$('aceite').checked){ err.textContent = 'Marque o aceite do regulamento para girar.'; return; }
+  if(used(phone)){ err.textContent = 'Este WhatsApp já girou a roleta. Cada número tem direito a um giro.'; return; }
+  err.textContent = '';
+
+  spinning = true; btn.disabled = true; btn.textContent = 'Liberando seu giro…'; $('wheelWrap').classList.add('spinning');
+  const res = await registrarGiro({nome, whatsapp: '55' + phone, origem: ORIGEM, ...dadosMeta()});
+  btn.textContent = 'Girar a roleta';
+
+  if(!res.ok){
+    spinning = false; btn.disabled = false; $('wheelWrap').classList.remove('spinning');
+    err.textContent = res.erro === 'ja_girou' ? 'Este WhatsApp já girou a roleta. Cada número tem direito a um giro.'
+      : res.erro === 'encerrada' ? 'A roleta foi encerrada. Obrigada por participar!'
+      : 'Não conseguimos liberar seu giro. Confira os dados e tente de novo.';
+    if(res.erro === 'ja_girou') markUsed(phone);
+    return;
+  }
+
+  let i = res.offline ? pickLocal() : PRIZES.findIndex(p => p.id === res.premio);
+  if(i < 0) i = 0;
+  const code = res.codigo || codigoLocal();
+  markUsed(phone);
+  if(res.offline){ try{ const L = JSON.parse(localStorage.getItem('jv_leads')||'[]'); L.push({nome, whatsapp:'55'+phone, premio:PRIZES[i].full, codigo:code, origem:ORIGEM, data:new Date().toISOString()}); localStorage.setItem('jv_leads', JSON.stringify(L)); }catch(e){} }
+  if(window.fbq){ try{ fbq('init', PIXEL_ID, { ph: '55'+phone, fn: nome.split(' ')[0].toLowerCase(), country: 'br' }); fbq('track', 'Lead', { content_name: PRIZES[i].full, origem: ORIGEM }, { eventID: code }); }catch(e){} }
+
+  const jitter = (Math.random()-.5) * SEG_DEG * .6;
+  const targetMod = ((-(i+.5)*SEG_DEG + jitter) % 360 + 360) % 360;
+  const curMod = ((rotation % 360) + 360) % 360;
+  rotation += 360*6 + ((targetMod - curMod + 360) % 360);
+  $('wheelWrap').classList.remove('locked');
+  $('wheelWrap').scrollIntoView({behavior:'smooth', block:'center'});
+  $('wheel').style.transform = `rotate(${rotation}deg)`;
+  const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 6400;
+  setTimeout(()=>showResult(nome, PRIZES[i], code), delay);
+});
+
+// Toque na roleta / botão central: gira se o cadastro estiver completo; senão, leva ao formulário.
+let msgTimer;
+function cadastroOk(){ return $('nome').value.trim().length >= 2 && whatsValido(whats.value.replace(/\D/g,'')) && $('aceite').checked; }
+function levarAoCadastro(){
+  const nomeOk = $('nome').value.trim().length >= 2, whatsOk = whatsValido(whats.value.replace(/\D/g,''));
+  const alvo = !nomeOk ? $('nome') : !whatsOk ? whats : $('aceite'), card = $('form');
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+  alvo.closest('.field')?.classList.add('attention');
+  card.classList.remove('nudge'); void card.offsetWidth; card.classList.add('nudge');
+  setTimeout(()=>alvo.focus({preventScroll:true}), 450);
+  if(nomeOk && whatsOk) $('err').textContent = 'Marque o aceite do regulamento para girar.';
+}
+function clicarRoleta(){
+  if(spinning || !$('overlay').hidden) return;
+  if(cadastroOk()){ $('form').requestSubmit(); return; }
+  const msg = $('wheelMsg'); msg.classList.add('show'); clearTimeout(msgTimer);
+  msgTimer = setTimeout(()=>{ msg.classList.remove('show'); levarAoCadastro(); }, 1400);
+}
+$('wheelWrap').addEventListener('click', clicarRoleta);
+$('wheelWrap').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); clicarRoleta(); } });
+$('hubBtn').addEventListener('click', e=>{
+  e.stopPropagation();
+  if(spinning || !$('overlay').hidden) return;
+  if(cadastroOk()){ $('form').requestSubmit(); return; }
+  $('err').textContent = 'Preencha seus dados para liberar o seu giro.';
+  levarAoCadastro();
+});
+
+function showResult(nome, p, code){
+  $('resBox').classList.toggle('raro', !!p.rare);
+  $('resTag').textContent = p.rare ? 'Prêmio raro' : 'Seu benefício';
+  $('resNome').textContent = nome.split(' ')[0];
+  $('resPrize').textContent = p.full;
+  $('resCond').textContent = p.cond;
+  $('resCode').textContent = code;
+  const validade = dataBR(FIM_CAMPANHA);
+  $('resVal').textContent = validade;
+  if(WHATSAPP_LOJA){
+    const texto = `Olá! Ganhei na roleta da Janaina Vieira Store e quero usar meu cupom.\n\nCupom: ${code}\nPrêmio: ${p.full}\nVálido até: ${validade}\nNome: ${nome}`;
+    $('resgatarBtn').href = `https://wa.me/${WHATSAPP_LOJA}?text=${encodeURIComponent(texto)}`;
+  }
+  $('overlay').hidden = false;
+  spinning = false; $('wheelWrap').classList.remove('spinning');
+}
+
+$('resgatarBtn').addEventListener('click', ()=>{
+  try{ if(window.fbq) fbq('track', 'Contact', { content_name: $('resPrize').textContent }, { eventID: $('resCode').textContent + '-contato' }); }catch(e){}
+});
+$('copyBtn').addEventListener('click', ()=>{
+  const t = $('resCode').textContent;
+  const done = ()=>{ $('copyBtn').textContent = 'Copiado'; setTimeout(()=>$('copyBtn').textContent='Copiar',1800); };
+  function sel(){ const r = document.createRange(); r.selectNodeContents($('resCode')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  try{ navigator.clipboard.writeText(t).then(done).catch(sel); }catch(e){ sel(); }
+});
+$('resetBtn').addEventListener('click', ()=>{
+  $('overlay').hidden = true;
+  $('form').reset(); $('spinBtn').disabled = false;
+  $('wheelWrap').classList.add('locked');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+</body>
+</html>
