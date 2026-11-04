@@ -247,7 +247,7 @@ function drawWheel(){
     ctx.textAlign='right'; ctx.textBaseline='middle';
     ctx.fillStyle = corTexto;
     const linhas = p.sub.length;
-    const yTit = linhas > 1 ? -24 : -13;
+    const yTit = linhas > 1 ? -28 : -14;
     if(p.rare){
       ctx.font = 'italic 600 40px "Cormorant Garamond", Georgia, serif';
     } else {
@@ -255,8 +255,8 @@ function drawWheel(){
     }
     ctx.fillText(p.label, R-30, yTit);
     ctx.fillStyle = corSub;
-    ctx.font = '500 15px "Jost", system-ui, sans-serif';
-    p.sub.forEach((t,k)=>ctx.fillText(t, R-30, yTit + 33 + k*20));
+    ctx.font = '500 19px "Jost", system-ui, sans-serif';
+    p.sub.forEach((t,k)=>ctx.fillText(t, R-28, yTit + 35 + k*24));
     ctx.restore();
   }
   ctx.beginPath(); ctx.arc(C,C,R-2,0,2*Math.PI); ctx.strokeStyle='#DCC38C'; ctx.lineWidth=4; ctx.stroke();
