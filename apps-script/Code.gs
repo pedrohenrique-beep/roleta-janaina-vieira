@@ -24,11 +24,11 @@ const CALCADO_ATE = 170;
 // Prêmios e chances (peso em %). Os "id" precisam ser iguais aos do index.html.
 const PREMIOS = [
   { id: 'off5',    nome: '5% OFF na sua compra',                          peso: 30 },
-  { id: 'copo',    nome: 'Copo térmico personalizado (compras +R$200)',   peso: 22 },
+  { id: 'copo',    nome: 'Copo térmico personalizado (compras acima de R$200,00)',   peso: 22 },
   { id: 'off10',   nome: '10% OFF na sua compra',                         peso: 14 },
-  { id: 'r50',     nome: 'R$50 OFF (compras a partir de R$599)',          peso: 14 },
-  { id: 'chinelo', nome: 'Chinelo Colcci (compras a partir de R$499)',    peso: 12 },
-  { id: 'r100',    nome: 'R$100 OFF (compras a partir de R$899)',         peso: 8 }
+  { id: 'r50',     nome: 'R$50 OFF (compras acima de R$599,00)',          peso: 14 },
+  { id: 'chinelo', nome: 'Chinelo Colcci (compras acima de R$499,00)',    peso: 12 },
+  { id: 'r100',    nome: 'R$100 OFF (compras acima de R$899,00)',         peso: 8 }
 ];
 const CALCADO = { id: 'calcado', nome: 'CALÇADO JANAINA VIEIRA (prêmio raro)' };
 

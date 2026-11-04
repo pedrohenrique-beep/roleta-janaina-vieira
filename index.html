@@ -200,13 +200,13 @@ footer strong{color:var(--texto);font-weight:500}
 // As chances ficam no Apps Script (servidor), não aqui: assim ninguém manipula o sorteio pelo navegador.
 // "w" abaixo só é usado no modo sem planilha (teste/queda de rede) e o calçado nunca sai nesse modo.
 const PRIZES = [
-  {id:'off5',    label:'5% OFF',       sub:'NA SUA COMPRA',   full:'5% OFF na sua compra',                       cond:'Desconto válido em toda a loja.',                        w:30},
-  {id:'copo',    label:'Copo Térmico', sub:'COMPRAS +R$200',  full:'Copo térmico personalizado',                 cond:'Brinde nas compras acima de R$200.',                     w:22},
-  {id:'off10',   label:'10% OFF',      sub:'NA SUA COMPRA',   full:'10% OFF na sua compra',                      cond:'Desconto válido em toda a loja.',                        w:14},
-  {id:'chinelo', label:'Chinelo',      sub:'COLCCI · +R$499', full:'Chinelo Colcci de presente',                 cond:'Brinde nas compras a partir de R$499.',                  w:12},
-  {id:'r50',     label:'R$50 OFF',     sub:'COMPRAS +R$599',  full:'R$50 OFF na sua compra',                     cond:'Desconto nas compras a partir de R$599.',                w:14},
-  {id:'r100',    label:'R$100 OFF',    sub:'COMPRAS +R$899',  full:'R$100 OFF na sua compra',                    cond:'Desconto nas compras a partir de R$899.',                w:8},
-  {id:'calcado', label:'Calçado',      sub:'JANAINA VIEIRA',  full:'Um Calçado Janaina Vieira de presente',                     cond:'A loja entra em contato pelo WhatsApp para você escolher o modelo e combinar a retirada.', w:0, rare:true}
+  {id:'off5',    label:'5% OFF',       sub:['EM TODA A LOJA'],                  full:'5% OFF na sua compra',              cond:'Desconto válido em toda a loja.',                        w:30},
+  {id:'copo',    label:'Copo Térmico', sub:['EM COMPRAS ACIMA','DE R$200,00'],   full:'Copo térmico personalizado',        cond:'Brinde em compras acima de R$200,00.',                   w:22},
+  {id:'off10',   label:'10% OFF',      sub:['EM TODA A LOJA'],                  full:'10% OFF na sua compra',             cond:'Desconto válido em toda a loja.',                        w:14},
+  {id:'chinelo', label:'Chinelo Colcci',sub:['EM COMPRAS ACIMA','DE R$499,00'],  full:'Chinelo Colcci de presente',        cond:'Brinde em compras acima de R$499,00.',                   w:12},
+  {id:'r50',     label:'R$50 OFF',     sub:['EM COMPRAS ACIMA','DE R$599,00'],   full:'R$50 OFF na sua compra',            cond:'Desconto em compras acima de R$599,00.',                 w:14},
+  {id:'r100',    label:'R$100 OFF',    sub:['EM COMPRAS ACIMA','DE R$899,00'],   full:'R$100 OFF na sua compra',           cond:'Desconto em compras acima de R$899,00.',                 w:8},
+  {id:'calcado', label:'Calçado',      sub:['JANAINA VIEIRA'],                  full:'Um Calçado Janaina Vieira de presente', cond:'A loja entra em contato pelo WhatsApp para você escolher o modelo e combinar a retirada.', w:0, rare:true}
 ];
 
 // Planilha (Google Apps Script). Cole aqui a URL /exec do App da Web.
@@ -246,12 +246,17 @@ function drawWheel(){
     ctx.save(); ctx.translate(C,C); ctx.rotate(a0 + SEG/2);
     ctx.textAlign='right'; ctx.textBaseline='middle';
     ctx.fillStyle = corTexto;
-    const tam = p.label.length > 9 ? 34 : 42;
-    ctx.font = (p.rare ? 'italic 600 ' : '600 ') + tam + 'px "Cormorant Garamond", Georgia, serif';
-    ctx.fillText(p.label, R-30, -13);
+    const linhas = p.sub.length;
+    const yTit = linhas > 1 ? -24 : -13;
+    if(p.rare){
+      ctx.font = 'italic 600 40px "Cormorant Garamond", Georgia, serif';
+    } else {
+      ctx.font = '500 ' + (p.label.length > 11 ? 27 : p.label.length > 9 ? 30 : 36) + 'px "Jost", system-ui, sans-serif';
+    }
+    ctx.fillText(p.label, R-30, yTit);
     ctx.fillStyle = corSub;
-    ctx.font = '500 16px "Jost", system-ui, sans-serif';
-    ctx.fillText(p.sub, R-30, 21);
+    ctx.font = '500 15px "Jost", system-ui, sans-serif';
+    p.sub.forEach((t,k)=>ctx.fillText(t, R-30, yTit + 33 + k*20));
     ctx.restore();
   }
   ctx.beginPath(); ctx.arc(C,C,R-2,0,2*Math.PI); ctx.strokeStyle='#DCC38C'; ctx.lineWidth=4; ctx.stroke();

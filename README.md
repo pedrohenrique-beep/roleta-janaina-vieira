@@ -15,11 +15,11 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 | Prêmio | Chance |
 |---|---|
 | 5% OFF | 30% |
-| Copo térmico personalizado (compras +R$200) | 22% |
+| Copo térmico personalizado (compras acima de R$200,00) | 22% |
 | 10% OFF | 14% |
-| R$50 OFF (a partir de R$599) | 14% |
-| Chinelo Colcci (a partir de R$499) | 12% |
-| R$100 OFF (a partir de R$899) | 8% |
+| R$50 OFF (acima de R$599,00) | 14% |
+| Chinelo Colcci (acima de R$499,00) | 12% |
+| R$100 OFF (acima de R$899,00) | 8% |
 | Calçado Janaina Vieira | 1 unidade, num giro entre o 150º e o 170º |
 
 ## Pendente
