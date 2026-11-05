@@ -1,5 +1,5 @@
 /**
- * Roleta Janaina Vieira: sorteia o prêmio, grava o giro na planilha e libera o calçado.
+ * Roleta Janaina Vieira: sorteia o prêmio, grava o giro na planilha e libera o calçado e os copos.
  * Cole este código em Extensões → Apps Script da planilha de leads
  * e implante como App da Web (Executar como: Eu · Acesso: Qualquer pessoa).
  *
@@ -8,6 +8,10 @@
  * CALÇADO (prêmio raro): sai uma única vez, num giro sorteado entre CALCADO_DE e CALCADO_ATE.
  * O número exato fica guardado em Propriedades do script → CALCADO_GIRO (só você vê).
  * Assim ninguém consegue "esperar o giro 150" para ganhar.
+ *
+ * COPO TÉRMICO: 1 copo a cada COPO_A_CADA giros, no máximo COPO_ESTOQUE copos.
+ * Dentro de cada bloco de 20 giros, o giro que leva o copo é sorteado (não é sempre o 20º).
+ * Quando os copos acabam, ele não sai mais.
  *
  * Meta (opcional): em Configurações do projeto → Propriedades do script:
  *   META_PIXEL_ID, META_TOKEN, META_TEST_CODE (só durante testes)
@@ -21,15 +25,19 @@ const FIM_CAMPANHA = new Date('2026-11-30T23:59:59-03:00');
 const CALCADO_DE = 150;
 const CALCADO_ATE = 170;
 
+// Copo térmico: 1 a cada 20 giros, estoque de 8
+const COPO_A_CADA = 20;
+const COPO_ESTOQUE = 8;
+
 // Prêmios e chances (peso em %). Os "id" precisam ser iguais aos do index.html.
 const PREMIOS = [
-  { id: 'off5',    nome: '5% OFF na sua compra',                          peso: 30 },
-  { id: 'copo',    nome: 'Copo térmico personalizado (compras acima de R$200,00)',   peso: 22 },
-  { id: 'off10',   nome: '10% OFF na sua compra',                         peso: 14 },
-  { id: 'r50',     nome: 'R$50 OFF (compras acima de R$599,00)',          peso: 14 },
-  { id: 'chinelo', nome: 'Chinelo Colcci (compras acima de R$499,00)',    peso: 12 },
-  { id: 'r100',    nome: 'R$100 OFF (compras acima de R$899,00)',         peso: 8 }
+  { id: 'off5',    nome: '5% OFF na sua compra',                       peso: 0 },
+  { id: 'off10',   nome: '10% OFF na sua compra',                      peso: 35 },
+  { id: 'chinelo', nome: 'Chinelo Colcci (compras acima de R$499,00)', peso: 20 },
+  { id: 'r100',    nome: 'R$100 OFF (compras acima de R$899,00)',      peso: 25 },
+  { id: 'r50',     nome: 'R$50 OFF (compras acima de R$599,00)',       peso: 20 }
 ];
+const COPO = { id: 'copo', nome: 'Copo térmico personalizado Janaina Vieira (compras acima de R$200,00)' };
 const CALCADO = { id: 'calcado', nome: 'CALÇADO JANAINA VIEIRA (prêmio raro)' };
 
 function doPost(e) {
@@ -59,6 +67,11 @@ function doPost(e) {
       aba.getRange(aba.getLastRow(), 1, 1, CABECALHO.length).setBackground('#F6E3B8').setFontWeight('bold');
       PropertiesService.getScriptProperties().setProperty('CALCADO_SAIU', String(giro));
     }
+    if (premio.id === COPO.id) {
+      aba.getRange(aba.getLastRow(), 1, 1, CABECALHO.length).setBackground('#EFE3D3');
+      const props = PropertiesService.getScriptProperties();
+      props.setProperty('COPOS_ENTREGUES', String(Number(props.getProperty('COPOS_ENTREGUES') || 0) + 1));
+    }
 
     try { enviarLeadMeta(dados, whatsapp, premio.nome, codigo); } catch (errMeta) { console.error('Meta CAPI', errMeta); }
     return resposta({ ok: true, premio: premio.id, codigo: codigo, giro: giro });
@@ -80,10 +93,27 @@ function sortear(giro) {
   // giro >= alvo: se por algum motivo o giro exato falhar, o próximo leva.
   if (!props.getProperty('CALCADO_SAIU') && giro >= alvo) return CALCADO;
 
+  // Copo: quantos copos já "venceram" até este giro (1 por bloco de 20) vs. quantos já saíram.
+  // Se o giro do copo coincidir com o do calçado, o copo passa para o giro seguinte.
+  const entregues = Number(props.getProperty('COPOS_ENTREGUES') || 0);
+  if (entregues < COPO_ESTOQUE && entregues < coposDevidos(giro, props)) return COPO;
+
   const total = PREMIOS.reduce(function (s, p) { return s + p.peso; }, 0);
   let r = Math.random() * total;
   for (let i = 0; i < PREMIOS.length; i++) { r -= PREMIOS[i].peso; if (r < 0) return PREMIOS[i]; }
   return PREMIOS[0];
+}
+
+function coposDevidos(giro, props) {
+  let devidos = 0;
+  const blocos = Math.min(COPO_ESTOQUE, Math.ceil(giro / COPO_A_CADA));
+  for (let b = 0; b < blocos; b++) {
+    const chave = 'COPO_BLOCO_' + b;
+    let pos = Number(props.getProperty(chave));
+    if (!pos) { pos = 1 + Math.floor(Math.random() * COPO_A_CADA); props.setProperty(chave, String(pos)); }
+    if (giro >= b * COPO_A_CADA + pos) devidos++;
+  }
+  return devidos;
 }
 
 function gerarCodigo(aba) {
@@ -124,15 +154,17 @@ function verCalcado() {
   const p = PropertiesService.getScriptProperties();
   console.log('Calçado programado para o giro: ' + (p.getProperty('CALCADO_GIRO') || 'ainda não definido (define no 1º giro)'));
   console.log('Já saiu no giro: ' + (p.getProperty('CALCADO_SAIU') || 'não'));
+  console.log('Copos entregues: ' + (p.getProperty('COPOS_ENTREGUES') || 0) + ' de ' + COPO_ESTOQUE);
   console.log('Giros até agora: ' + Math.max(0, obterAba().getLastRow() - 1));
 }
 
-// Use SÓ depois de apagar as linhas de teste: zera o controle do calçado.
+// Use SÓ depois de apagar as linhas de teste: zera o controle do calçado e dos copos.
 function zerarCalcado() {
   const p = PropertiesService.getScriptProperties();
-  p.deleteProperty('CALCADO_GIRO');
-  p.deleteProperty('CALCADO_SAIU');
-  console.log('Controle do calçado zerado. O giro premiado será sorteado de novo.');
+  Object.keys(p.getProperties()).forEach(function (k) {
+    if (k.indexOf('CALCADO_') === 0 || k.indexOf('COPO') === 0) p.deleteProperty(k);
+  });
+  console.log('Controle do calçado e dos copos zerado.');
 }
 
 // ---------- Meta: API de Conversões ----------
