@@ -14,9 +14,9 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 
 | Prêmio | Chance |
 |---|---|
-| 5% OFF | 0% (aparece na roleta, mas não sai) |
+| 5% OFF | 5% |
 | 10% OFF | 35% |
-| R$100 OFF (acima de R$899,00) | 25% |
+| R$100 OFF (acima de R$899,00) | 20% |
 | Chinelo Colcci (acima de R$499,00) | 20% |
 | R$50 OFF (acima de R$599,00) | 20% |
 | Copo térmico Janaina Vieira | 1 a cada 20 giros (giro sorteado dentro do bloco), até 8 copos |
