@@ -114,8 +114,11 @@ footer strong{color:var(--texto);font-weight:500}
 .result h3{font-family:var(--display);font-weight:500;font-size:32px;margin:0;line-height:1.1}
 .result .prize{font-family:var(--display);font-style:italic;font-size:27px;color:var(--caramelo-esc);line-height:1.2;text-wrap:balance}
 .result .cond{font-size:13px;color:var(--muted);margin:0}
-.result .validade{margin:0;font-size:14px}
-.result .validade strong{color:var(--caramelo-esc);font-weight:500}
+.result .validade{margin:0;padding:12px 14px;border:1px solid rgba(166,90,46,.35);border-radius:4px;background:rgba(166,90,46,.07);font-size:14px;line-height:1.45}
+.result .validade strong{display:block;font-family:var(--display);font-size:24px;font-weight:600;color:var(--caramelo-esc);margin-top:2px}
+.result .validade span{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.result.raro .validade{border-color:rgba(220,195,140,.4);background:rgba(220,195,140,.08)}
+.result.raro .validade span{color:#CDBFB2}
 .result.raro{background:var(--espresso);color:var(--creme)}
 .result.raro .prize,.result.raro .tag{color:var(--ouro-claro)}
 .result.raro .cond{color:#CDBFB2}
@@ -174,7 +177,7 @@ footer strong{color:var(--texto);font-weight:500}
   <footer>
     <span><strong>Janaina Vieira</strong> · Betim, MG</span>
     <span>Seg a Sex 9h às 19h · Sáb 9h às 13h</span>
-    <span>Giros e cupons válidos até 30/11/2026. Benefício pessoal e intransferível, 1 por cliente, não cumulativo com outras promoções. Válido apresentando o código e o WhatsApp cadastrado.</span>
+    <span>Giros até 30/11/2026. Cupons válidos para resgate até 15/12/2026. Benefício pessoal e intransferível, 1 por cliente, não cumulativo com outras promoções. Válido apresentando o código e o WhatsApp cadastrado.</span>
   </footer>
 </main>
 
@@ -185,8 +188,8 @@ footer strong{color:var(--texto);font-weight:500}
     <div class="prize" id="resPrize"></div>
     <p class="cond" id="resCond"></p>
     <div class="code"><code id="resCode">JV-0000</code><button class="copy" type="button" id="copyBtn">Copiar</button></div>
-    <p class="validade">Válido até <strong id="resVal">30/11</strong></p>
-    <p class="cond">Apresente o código na loja ou pelo WhatsApp, usando o mesmo número cadastrado. 1 benefício por cliente.</p>
+    <p class="validade">Resgate seu prêmio até<strong id="resVal">15/12/2026</strong><span>Depois dessa data o cupom expira.</span></p>
+    <p class="cond">Use o código na loja ou pelo WhatsApp, com o mesmo número cadastrado. 1 benefício por cliente.</p>
     <div class="actions">
       <a class="btn" id="resgatarBtn" href="https://linktr.ee/janaina.vieira.store" target="_blank" rel="noopener">Resgatar pelo WhatsApp</a>
       <button class="btn ghost" type="button" id="resetBtn">Novo participante</button>
@@ -217,6 +220,8 @@ const WHATSAPP_LOJA = '5531999192726';
 const PIXEL_ID = '';
 // Campanha: giros e cupons até esta data (horário de Brasília).
 const FIM_CAMPANHA = new Date('2026-11-30T23:59:59-03:00');
+// Validade dos cupons: data fixa para todos (quem gira no último dia ainda tem 15 dias).
+const VALIDADE_CUPOM = new Date('2026-12-15T23:59:59-03:00');
 // ========================
 
 const $ = id => document.getElementById(id);
@@ -413,7 +418,7 @@ function showResult(nome, p, code){
   $('resPrize').textContent = p.full;
   $('resCond').textContent = p.cond;
   $('resCode').textContent = code;
-  const validade = dataBR(FIM_CAMPANHA);
+  const validade = dataBR(VALIDADE_CUPOM);
   $('resVal').textContent = validade;
   if(WHATSAPP_LOJA){
     const texto = `Olá, quero utilizar meu cupom de desconto da roleta!\n\nCupom: ${code}\nPrêmio: ${p.full}\nNome: ${nome}`;
