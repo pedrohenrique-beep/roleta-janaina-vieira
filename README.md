@@ -6,7 +6,7 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 
 - **Textos e prêmios exibidos**: array `PRIZES` em `index.html`.
 - **Chances de cada prêmio**: array `PREMIOS` em `apps-script/Code.gs` (o sorteio acontece no servidor).
-- **Giro do calçado**: `CALCADO_DE` e `CALCADO_ATE` em `Code.gs` (hoje entre o 150º e o 170º giro, sorteado uma vez e guardado em segredo).
+- **Copos**: `COPO_A_CADA` e `COPO_ESTOQUE` em `Code.gs`.
 - **Configuração** (topo do `<script>` do `index.html`): `SHEETS_URL`, `WHATSAPP_LOJA`, `PIXEL_ID`, `FIM_CAMPANHA`.
 - **Cores e fontes**: bloco `:root` no `<style>`.
 
@@ -14,13 +14,12 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 
 | Prêmio | Chance |
 |---|---|
-| 5% OFF | 5% |
 | 10% OFF | 35% |
-| R$100 OFF (acima de R$899,00) | 20% |
-| Chinelo Colcci (acima de R$499,00) | 20% |
+| Chinelo Lança Perfume (acima de R$499,00) | 20% |
 | R$50 OFF (acima de R$599,00) | 20% |
-| Copo térmico Janaina Vieira | 1 a cada 20 giros (giro sorteado dentro do bloco), até 8 copos |
-| Calçado Janaina Vieira | 1 unidade, num giro entre o 150º e o 170º |
+| R$100 OFF (acima de R$899,00) | 20% |
+| Frete grátis para MG (acima de R$799,00) | 5% |
+| Copo térmico Janaina Vieira (acima de R$200,00) | 1 a cada 20 giros (giro sorteado dentro do bloco), até 8 copos |
 
 ## Pendente
 
@@ -31,11 +30,11 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 
 ## Planilha
 
-`apps-script/Code.gs`: sorteia o prêmio, gera o código `JV-XXXX`, bloqueia WhatsApp repetido e grava na aba **Leads** com o nº do giro. A linha do calçado fica destacada em dourado.
+`apps-script/Code.gs`: sorteia o prêmio, gera o código `JV-XXXX`, bloqueia WhatsApp repetido e grava na aba **Leads** com o nº do giro. A linha de quem ganha o copo fica com fundo bege.
 
 Funções úteis no editor do Apps Script:
-- `verCalcado()`: mostra em qual giro o calçado vai sair e se já saiu.
-- `zerarCalcado()`: zera o controle (use só depois de apagar as linhas de teste).
+- `verCalcado()`: mostra quantos copos já saíram e quantos giros houve.
+- `zerarCalcado()`: zera a contagem dos copos (use só depois de apagar as linhas de teste).
 
 ## Links por origem
 

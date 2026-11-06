@@ -1,13 +1,9 @@
 /**
- * Roleta Janaina Vieira: sorteia o prêmio, grava o giro na planilha e libera o calçado e os copos.
+ * Roleta Janaina Vieira: sorteia o prêmio, grava o giro na planilha e libera os copos.
  * Cole este código em Extensões → Apps Script da planilha de leads
  * e implante como App da Web (Executar como: Eu · Acesso: Qualquer pessoa).
  *
  * O sorteio acontece AQUI (servidor), não no navegador: ninguém consegue forçar o prêmio.
- *
- * CALÇADO (prêmio raro): sai uma única vez, num giro sorteado entre CALCADO_DE e CALCADO_ATE.
- * O número exato fica guardado em Propriedades do script → CALCADO_GIRO (só você vê).
- * Assim ninguém consegue "esperar o giro 150" para ganhar.
  *
  * COPO TÉRMICO: 1 copo a cada COPO_A_CADA giros, no máximo COPO_ESTOQUE copos.
  * Dentro de cada bloco de 20 giros, o giro que leva o copo é sorteado (não é sempre o 20º).
@@ -21,24 +17,19 @@ const ABA = 'Leads';
 const CABECALHO = ['Data', 'Giro nº', 'Nome', 'WhatsApp', 'Prêmio', 'Código', 'Origem', 'Status do resgate', 'Valor da compra', 'Observações'];
 const FIM_CAMPANHA = new Date('2026-11-30T23:59:59-03:00');
 
-// Faixa do giro que ganha o calçado
-const CALCADO_DE = 150;
-const CALCADO_ATE = 170;
-
 // Copo térmico: 1 a cada 20 giros, estoque de 8
 const COPO_A_CADA = 20;
 const COPO_ESTOQUE = 8;
 
 // Prêmios e chances (peso em %). Os "id" precisam ser iguais aos do index.html.
 const PREMIOS = [
-  { id: 'off5',    nome: '5% OFF na sua compra',                       peso: 5 },
-  { id: 'off10',   nome: '10% OFF na sua compra',                      peso: 35 },
-  { id: 'chinelo', nome: 'Chinelo Colcci (compras acima de R$499,00)', peso: 20 },
-  { id: 'r100',    nome: 'R$100 OFF (compras acima de R$899,00)',      peso: 20 },
-  { id: 'r50',     nome: 'R$50 OFF (compras acima de R$599,00)',       peso: 20 }
+  { id: 'off10',   nome: '10% OFF na sua compra',                              peso: 35 },
+  { id: 'chinelo', nome: 'Chinelo Lança Perfume (compras acima de R$499,00)',  peso: 20 },
+  { id: 'r100',    nome: 'R$100 OFF (compras acima de R$899,00)',              peso: 20 },
+  { id: 'r50',     nome: 'R$50 OFF (compras acima de R$599,00)',               peso: 20 },
+  { id: 'frete',   nome: 'Frete grátis para MG (compras acima de R$799,00)',   peso: 5 }
 ];
 const COPO = { id: 'copo', nome: 'Copo térmico personalizado Janaina Vieira (compras acima de R$200,00)' };
-const CALCADO = { id: 'calcado', nome: 'CALÇADO JANAINA VIEIRA (prêmio raro)' };
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -63,10 +54,6 @@ function doPost(e) {
       premio.nome, codigo, String(dados.origem || 'direto').slice(0, 40),
       'Pendente', '', ''
     ]);
-    if (premio.id === CALCADO.id) {
-      aba.getRange(aba.getLastRow(), 1, 1, CABECALHO.length).setBackground('#F6E3B8').setFontWeight('bold');
-      PropertiesService.getScriptProperties().setProperty('CALCADO_SAIU', String(giro));
-    }
     if (premio.id === COPO.id) {
       aba.getRange(aba.getLastRow(), 1, 1, CABECALHO.length).setBackground('#EFE3D3');
       const props = PropertiesService.getScriptProperties();
@@ -85,16 +72,8 @@ function doPost(e) {
 
 function sortear(giro) {
   const props = PropertiesService.getScriptProperties();
-  let alvo = Number(props.getProperty('CALCADO_GIRO'));
-  if (!alvo) {
-    alvo = CALCADO_DE + Math.floor(Math.random() * (CALCADO_ATE - CALCADO_DE + 1));
-    props.setProperty('CALCADO_GIRO', String(alvo));
-  }
-  // giro >= alvo: se por algum motivo o giro exato falhar, o próximo leva.
-  if (!props.getProperty('CALCADO_SAIU') && giro >= alvo) return CALCADO;
 
   // Copo: quantos copos já "venceram" até este giro (1 por bloco de 20) vs. quantos já saíram.
-  // Se o giro do copo coincidir com o do calçado, o copo passa para o giro seguinte.
   const entregues = Number(props.getProperty('COPOS_ENTREGUES') || 0);
   if (entregues < COPO_ESTOQUE && entregues < coposDevidos(giro, props)) return COPO;
 
@@ -149,22 +128,20 @@ function obterAba() {
   return aba;
 }
 
-// Para conferir (rode no editor): mostra em qual giro o calçado vai sair e se já saiu.
+// Para conferir (rode no editor): quantos copos já saíram e quantos giros houve.
 function verCalcado() {
   const p = PropertiesService.getScriptProperties();
-  console.log('Calçado programado para o giro: ' + (p.getProperty('CALCADO_GIRO') || 'ainda não definido (define no 1º giro)'));
-  console.log('Já saiu no giro: ' + (p.getProperty('CALCADO_SAIU') || 'não'));
   console.log('Copos entregues: ' + (p.getProperty('COPOS_ENTREGUES') || 0) + ' de ' + COPO_ESTOQUE);
   console.log('Giros até agora: ' + Math.max(0, obterAba().getLastRow() - 1));
 }
 
-// Use SÓ depois de apagar as linhas de teste: zera o controle do calçado e dos copos.
+// Use SÓ depois de apagar as linhas de teste: zera a contagem dos copos.
 function zerarCalcado() {
   const p = PropertiesService.getScriptProperties();
   Object.keys(p.getProperties()).forEach(function (k) {
     if (k.indexOf('CALCADO_') === 0 || k.indexOf('COPO') === 0) p.deleteProperty(k);
   });
-  console.log('Controle do calçado e dos copos zerado.');
+  console.log('Contagem dos copos zerada.');
 }
 
 // ---------- Meta: API de Conversões ----------
