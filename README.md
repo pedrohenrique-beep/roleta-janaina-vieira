@@ -14,11 +14,11 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 
 | Prêmio | Chance |
 |---|---|
-| 10% OFF | 35% |
+| 10% OFF | 20% |
 | Chinelo Lança Perfume (acima de R$499,00) | 20% |
 | R$50 OFF (acima de R$599,00) | 20% |
 | R$100 OFF (acima de R$899,00) | 20% |
-| Frete grátis para MG (acima de R$799,00) | 5% |
+| Frete grátis para MG (acima de R$799,00) | 20% |
 | Copo térmico Janaina Vieira (acima de R$200,00) | 1 a cada 20 giros (giro sorteado dentro do bloco), até 8 copos |
 
 ## Pendente
