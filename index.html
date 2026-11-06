@@ -210,12 +210,12 @@ footer strong{color:var(--texto);font-weight:500}
 // As chances ficam no Apps Script (servidor), não aqui: assim ninguém manipula o sorteio pelo navegador.
 // "w" abaixo só é usado no modo sem planilha (teste/queda de rede) e o copo nunca sai nesse modo.
 const PRIZES = [
-  {id:'off10',   label:'10% OFF',      sub:['NA SUA COMPRA'],                                   full:'10% OFF na sua compra',                 cond:'Desconto na sua compra, exceto produtos em promoção.', w:20},
+  {id:'off10',   label:'10% OFF',      sub:['NA SUA COMPRA'],                                   full:'10% OFF na sua compra',                 cond:'Desconto na sua compra, exceto produtos em promoção.', w:30},
   {id:'copo',    label:'Copo Térmico', sub:['EM COMPRAS ACIMA','DE R$200,00'],                   full:'Copo térmico personalizado Janaina Vieira', cond:'Brinde em compras acima de R$200,00.',            w:0},
   {id:'chinelo', label:'Chinelo',      sub:['LANÇA PERFUME','EM COMPRAS ACIMA','DE R$499,00'],  full:'Chinelo Lança Perfume de presente',     cond:'Brinde em compras acima de R$499,00.',                 w:20},
   {id:'r50',     label:'R$50 OFF',     sub:['EM COMPRAS ACIMA','DE R$599,00'],                   full:'R$50 OFF na sua compra',                cond:'Desconto em compras acima de R$599,00.',               w:20},
   {id:'r100',    label:'R$100 OFF',    sub:['EM COMPRAS ACIMA','DE R$899,00'],                   full:'R$100 OFF na sua compra',               cond:'Desconto em compras acima de R$899,00.',               w:20},
-  {id:'frete',   label:'Frete Grátis', sub:['EM COMPRAS ACIMA','DE R$799,90','APENAS EM MG'], full:'Frete grátis (apenas em MG)',         cond:'Frete grátis para compras acima de R$799,90 (apenas em MG).', w:20, dark:true}
+  {id:'frete',   label:'Frete Grátis', sub:['EM COMPRAS ACIMA','DE R$799,90','APENAS EM MG'], full:'Frete grátis (apenas em MG)',         cond:'Frete grátis para compras acima de R$799,90 (apenas em MG).', w:10, dark:true}
 ];
 
 // Planilha (Google Apps Script). Cole aqui a URL /exec do App da Web.

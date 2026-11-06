@@ -23,11 +23,11 @@ const COPO_ESTOQUE = 8;
 
 // Prêmios e chances (peso em %). Os "id" precisam ser iguais aos do index.html.
 const PREMIOS = [
-  { id: 'off10',   nome: '10% OFF na sua compra',                              peso: 20 },
+  { id: 'off10',   nome: '10% OFF na sua compra',                              peso: 30 },
   { id: 'chinelo', nome: 'Chinelo Lança Perfume (compras acima de R$499,00)',  peso: 20 },
   { id: 'r100',    nome: 'R$100 OFF (compras acima de R$899,00)',              peso: 20 },
   { id: 'r50',     nome: 'R$50 OFF (compras acima de R$599,00)',               peso: 20 },
-  { id: 'frete',   nome: 'Frete grátis para compras acima de R$799,90 (apenas em MG)',   peso: 20 }
+  { id: 'frete',   nome: 'Frete grátis para compras acima de R$799,90 (apenas em MG)',   peso: 10 }
 ];
 const COPO = { id: 'copo', nome: 'Copo térmico personalizado Janaina Vieira (compras acima de R$200,00)' };
 
