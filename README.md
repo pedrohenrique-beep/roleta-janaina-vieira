@@ -25,7 +25,7 @@ Roleta premiada da Janaina Vieira (Betim, MG) para captação de leads via tráf
 
 - [x] URL `/exec` do Apps Script em `SHEETS_URL`
 - [x] WhatsApp da loja em `WHATSAPP_LOJA`
-- [ ] Pixel da Meta em `PIXEL_ID` (opcional)
+- [x] Pixel da Meta em `PIXEL_ID` (2254123642169613)
 - [ ] Endereço completo no rodapé
 
 ## Planilha
